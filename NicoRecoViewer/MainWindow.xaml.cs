@@ -24,6 +24,17 @@ namespace NicoRecoViewer
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 履歴情報の数
+        private int historyCount = 0;
+        // 表示中の履歴情報のインデックス
+        private int currentHistoryidx = 0;
+
+        private CookieContainer cc = null;
+
+        HistoryData historyData = null;
+
+        List<MovieData> movieViewList = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,28 +52,50 @@ namespace NicoRecoViewer
             // アカウント情報入力ダイアログを表示する。
 
             // ログインする。
-            CookieContainer cc = NicoVideoApiAccessor.Login("", "");
+            cc = NicoVideoApiAccessor.Login("", "");
 
             // 履歴情報を取得する。
-            HistoryData historyData = NicoVideoApiAccessor.GetHistory(cc);
-            List<MovieData> list = new List<MovieData>();
-            foreach (var history in historyData.history)
-            {
-                // 関連動画情報を取得する。
-                related_video videos = NicoVideoApiAccessor.GetRelatedMovie(cc, history.video_id);
-                for(int i = 0; i < videos.data_count; i++)
-                {
-                    MovieData data = new MovieData();
-                    Video video = videos.video[i];
-                    data.Thumbnail = video.thumbnail;
-                    data.Title = video.title;
-                    data.Url = video.url;
-                    list.Add(data);
-                }
-            }
+            historyData = NicoVideoApiAccessor.GetHistory(cc);
+            movieViewList = new List<MovieData>();
+
+            historyCount = historyData.history.Count();
+            currentHistoryidx = 0;
+
+            HistoryData.History history = historyData.history[currentHistoryidx];
+
+            LoadMovieList(movieViewList, cc, history);
 
             // 動画一覧を表示する。
-            movieList.ItemsSource = list;
+            movieList.ItemsSource = movieViewList;
+        }
+
+        private void LoadMovieList(List<MovieData> list, CookieContainer cc, HistoryData.History history)
+        {
+            if(list[list.Count() - 1].Title == "更に読み込む")
+            {
+                list.RemoveAt(list.Count() - 1);
+            }
+
+            related_video videos = NicoVideoApiAccessor.GetRelatedMovie(cc, history.video_id);
+            for (int i = 0; i < videos.data_count; i++)
+            {
+                MovieData data = new MovieData();
+                Video video = videos.video[i];
+                data.Thumbnail = video.thumbnail;
+                data.Title = video.title;
+                data.Url = video.url;
+                list.Add(data);
+            }
+
+            MovieData button = new MovieData();
+            button.Title = "更に読み込む";
+
+            list.Add(button);
+        }
+
+        private void B_Click(object sender, RoutedEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void movieList_SelectionChanged(object sender, SelectionChangedEventArgs e)
