@@ -12,7 +12,15 @@ namespace NicoRecoViewer
         public static readonly string HistoryUrl = "http://www.nicovideo.jp/api/videoviewhistory/list";
         public static readonly string RelatedUrl = "http://www.nicovideo.jp/api/getrelation?page=1&sort=p&order=d&video=";
 
-        private static readonly string LoginMessage = "メールアドレスとパスワードを入力してください。";
-        private static readonly string LoginFailedMessage = "メールアドレスもしくはパスワードが間違っています。";
+        public static readonly string LoginMessage = "メールアドレスとパスワードを入力してください。";
+        public static readonly string LoginFailedMessage = "メールアドレスもしくはパスワードが間違っています。";
+        public static readonly string GetHistoryFailedMessage = "視聴履歴を取得できませんでした。";
+
+        public static readonly string CaptionError = "Error";
+
+        public static class HistoryStatus
+        {
+            public static readonly string Fail = "fail";
+        }
     }
 }

@@ -61,6 +61,11 @@ namespace NicoRecoViewer
 
             // 履歴情報を取得する。
             historyData = NicoVideoApiAccessor.GetHistory(cc);
+            if(Constants.HistoryStatus.Fail.Equals(historyData.status))
+            {
+                MessageBox.Show(Constants.GetHistoryFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             movieViewList = new List<MovieData>();
 
             historyCount = historyData.history.Count();
@@ -117,7 +122,7 @@ namespace NicoRecoViewer
                     {
                         System.Diagnostics.Process.Start(mv.Url);
                     }
-                    else if(currentHistoryidx < historyData.history.Count())
+                    else if(historyData.history != null && currentHistoryidx < historyData.history.Count())
                     {
                         HistoryData.History history = historyData.history[currentHistoryidx++];
                         LoadMovieList(movieViewList, cc, history);
