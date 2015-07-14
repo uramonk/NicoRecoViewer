@@ -22,5 +22,11 @@ namespace NicoRecoViewer
         {
             public static readonly string Fail = "fail";
         }
+
+        public enum Result
+        {
+            Failed,
+            Success
+        }
     }
 }

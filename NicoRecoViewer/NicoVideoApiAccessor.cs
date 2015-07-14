@@ -15,15 +15,28 @@ namespace NicoRecoViewer
 {
     public static class NicoVideoApiAccessor
     {
-        
+        public class ResponseResult
+        {
+            public ResponseResult(Constants.Result result, CookieContainer cc)
+            {
+                Result = result;
+                CookieContainer = cc;
+            }
+
+            public Constants.Result Result { get; private set; }
+            public CookieContainer CookieContainer { get; private set; }
+        }
+
         /// <summary>
         /// ニコニコ動画にログインする。
         /// </summary>
         /// <param name="userId">メールアドレス</param>
         /// <param name="password">パスワード</param>
         /// <returns></returns>
-        public static CookieContainer Login(string userId, string password)
+        public static ResponseResult Login(string userId, string password)
         {
+            ResponseResult result = null;
+
             // 参考サイト：http://qiita.com/katabamisan/items/8028584b2b6224ce0c92
             string content = "mail=" + userId + "&password=" + password;
             byte[] contentBytes = Encoding.ASCII.GetBytes(content);
@@ -59,13 +72,25 @@ namespace NicoRecoViewer
             }
             finally
             {
+                
                 if(response != null)
                 {
+                    Constants.Result r;
+                    if(response.ResponseUri.AbsoluteUri.Contains("cant_login"))
+                    {
+                        r = Constants.Result.Failed;
+                    }
+                    else
+                    {
+                        r = Constants.Result.Success;
+                    }
+
+                    result = new ResponseResult(r, request.CookieContainer);
                     response.Close();
                 }
             }
 
-            return request.CookieContainer;
+            return result;
         }
 
         public static void Logout()

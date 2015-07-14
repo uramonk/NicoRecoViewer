@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
+using static NicoRecoViewer.NicoVideoApiAccessor;
 
 namespace NicoRecoViewer
 {
@@ -38,29 +39,14 @@ namespace NicoRecoViewer
         public MainWindow()
         {
             InitializeComponent();
-
-            List<MovieData> list = new List<MovieData>();
-            MovieData data = new MovieData();
-            //data.Image = "";
-            data.Title = "Title";
-            list.Add(data);
-            movieList.ItemsSource = list;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // アカウント情報入力ダイアログを表示する。
-            LoginWindow loginWin = new LoginWindow();
-            loginWin.ShowDialog();
-            string id = loginWin.Id;
-            string pass = loginWin.Password;
-            loginWin = null;
-
-            // ログインする。
-            cc = NicoVideoApiAccessor.Login(id, pass);
+            ResponseResult result = Login();
 
             // 履歴情報を取得する。
-            historyData = NicoVideoApiAccessor.GetHistory(cc);
+            historyData = NicoVideoApiAccessor.GetHistory(result.CookieContainer);
             if(Constants.HistoryStatus.Fail.Equals(historyData.status))
             {
                 MessageBox.Show(Constants.GetHistoryFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
@@ -79,6 +65,26 @@ namespace NicoRecoViewer
             movieList.ItemsSource = movieViewList;
         }
 
+        private ResponseResult Login()
+        {
+            // アカウント情報入力ダイアログを表示する。
+            LoginWindow loginWin = new LoginWindow();
+            loginWin.ShowDialog();
+            string id = loginWin.Id;
+            string pass = loginWin.Password;
+            loginWin = null;
+
+            // ログインする。
+            ResponseResult result = NicoVideoApiAccessor.Login(id, pass);
+            if(result.Result == Constants.Result.Failed)
+            {
+                MessageBox.Show(Constants.LoginFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
+                return Login();
+            }
+
+            return result;
+        }
+
         private void LoadMovieList(List<MovieData> list, CookieContainer cc, HistoryData.History history)
         {
             if(list.Count() != 0 && list[list.Count() - 1].Title == "更に読み込む")
@@ -87,6 +93,7 @@ namespace NicoRecoViewer
             }
 
             related_video videos = NicoVideoApiAccessor.GetRelatedMovie(cc, history.video_id);
+
             for (int i = 0; i < videos.data_count; i++)
             {
                 MovieData data = new MovieData();
