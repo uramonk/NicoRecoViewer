@@ -5,9 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NicoRecoViewer"
         mc:Ignorable="d"
-        Title="NicoRecoViewer" Height="800" Width="500" Loaded="Window_Loaded">
+        Title="NicoRecoViewer" Height="800" Width="550" Loaded="Window_Loaded">
     <Grid>
-        <ListView Name="movieList" SelectionChanged="movieList_SelectionChanged">
+        <ListView Name="movieList" 
+                  SelectionChanged="movieList_SelectionChanged" 
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                  ScrollViewer.CanContentScroll="False">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Grid Height="150" Width="500">

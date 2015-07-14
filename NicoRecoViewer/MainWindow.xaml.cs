@@ -50,9 +50,14 @@ namespace NicoRecoViewer
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // アカウント情報入力ダイアログを表示する。
+            LoginWindow loginWin = new LoginWindow();
+            loginWin.ShowDialog();
+            string id = loginWin.Id;
+            string pass = loginWin.Password;
+            loginWin = null;
 
             // ログインする。
-            cc = NicoVideoApiAccessor.Login("", "");
+            cc = NicoVideoApiAccessor.Login(id, pass);
 
             // 履歴情報を取得する。
             historyData = NicoVideoApiAccessor.GetHistory(cc);
@@ -61,7 +66,7 @@ namespace NicoRecoViewer
             historyCount = historyData.history.Count();
             currentHistoryidx = 0;
 
-            HistoryData.History history = historyData.history[currentHistoryidx];
+            HistoryData.History history = historyData.history[currentHistoryidx++];
 
             LoadMovieList(movieViewList, cc, history);
 
@@ -71,7 +76,7 @@ namespace NicoRecoViewer
 
         private void LoadMovieList(List<MovieData> list, CookieContainer cc, HistoryData.History history)
         {
-            if(list[list.Count() - 1].Title == "更に読み込む")
+            if(list.Count() != 0 && list[list.Count() - 1].Title == "更に読み込む")
             {
                 list.RemoveAt(list.Count() - 1);
             }
@@ -84,18 +89,20 @@ namespace NicoRecoViewer
                 data.Thumbnail = video.thumbnail;
                 data.Title = video.title;
                 data.Url = video.url;
+                data.Type = "Movie";
                 list.Add(data);
             }
 
-            MovieData button = new MovieData();
-            button.Title = "更に読み込む";
+            if(currentHistoryidx < historyData.history.Count())
+            {
+                MovieData button = new MovieData();
+                button.Title = "更に読み込む";
+                button.Type = null;
 
-            list.Add(button);
-        }
+                list.Add(button);
+            }
 
-        private void B_Click(object sender, RoutedEventArgs e)
-        {
-            throw new NotImplementedException();
+            movieList.Items.Refresh();
         }
 
         private void movieList_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -106,7 +113,15 @@ namespace NicoRecoViewer
                 MovieData mv = lv.SelectedItem as MovieData;
                 if(mv != null)
                 {
-                    System.Diagnostics.Process.Start(mv.Url);
+                    if(mv.Type != null)
+                    {
+                        System.Diagnostics.Process.Start(mv.Url);
+                    }
+                    else if(currentHistoryidx < historyData.history.Count())
+                    {
+                        HistoryData.History history = historyData.history[currentHistoryidx++];
+                        LoadMovieList(movieViewList, cc, history);
+                    }
                 }
             }
            
@@ -138,7 +153,7 @@ namespace NicoRecoViewer
             set;
         }
 
-        public string Tag
+        public string Type
         {
             get;
             set;
