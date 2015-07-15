@@ -41,9 +41,9 @@
                                     TextWrapping="Wrap" 
                                     FontSize="20"
                                     VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"/>
+                                    HorizontalAlignment="Left"/>
                         <TextBlock Text="{Binding View}" 
-                                    Grid.Column="1" Grid.ColumnSpan="2"
+                                    Grid.Column="1"
                                     Grid.Row="1"
                                     Width="330" 
                                     Height="25"
@@ -51,8 +51,18 @@
                                     TextWrapping="Wrap" 
                                     FontSize="12"
                                     VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"/>
+                                    HorizontalAlignment="Left"/>
                         <TextBlock Text="{Binding Comment}" 
+                                    Grid.Column="2"
+                                    Grid.Row="1"
+                                    Width="155" 
+                                    Height="25"
+                                    Margin="0"
+                                    TextWrapping="Wrap" 
+                                    FontSize="12"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Mylist}" 
                                     Grid.Column="1"
                                     Grid.Row="2"
                                     Width="155" 
@@ -61,8 +71,8 @@
                                     TextWrapping="Wrap" 
                                     FontSize="12"
                                     VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"/>
-                        <TextBlock Text="{Binding Mylist}" 
+                                    HorizontalAlignment="Left"/>
+                        <TextBlock Text="{Binding Length}" 
                                     Grid.Column="2"
                                     Grid.Row="2"
                                     Width="155" 
@@ -71,7 +81,7 @@
                                     TextWrapping="Wrap" 
                                     FontSize="12"
                                     VerticalAlignment="Stretch"
-                                    HorizontalAlignment="Stretch"/>
+                                    HorizontalAlignment="Left"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

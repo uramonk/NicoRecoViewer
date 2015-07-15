@@ -113,6 +113,10 @@ namespace NicoRecoViewer
                 data.View = "再生：" + video.view.ToString();
                 data.Comment = "コメ：" + video.comment.ToString();
                 data.Mylist = "マイ：" + video.mylist.ToString();
+
+                TimeSpan ts = new TimeSpan(0, 0, video.length);
+                data.Length ="再生時間：" + ts.ToString();
+
                 data.Url = video.url;
                 data.Type = "Movie";
                 list.Add(data);
@@ -191,6 +195,12 @@ namespace NicoRecoViewer
         }
 
         public string Mylist
+        {
+            get;
+            set;
+        }
+
+        public string Length
         {
             get;
             set;
