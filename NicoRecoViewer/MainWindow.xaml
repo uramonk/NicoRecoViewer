@@ -5,19 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NicoRecoViewer"
         xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
+        xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         Title="NicoRecoViewer" Height="800" Width="1700" Loaded="Window_Loaded">
     <Grid>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="542"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="18"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <Menu VerticalAlignment="Top" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <MenuItem Header="ヘルプ">
+                <MenuItem Name="lisenceMenu" Header="ライセンス" Click="lisenceMenu_Click" />
+            </MenuItem>
+        </Menu>
+
         <!-- http://stackoverflow.com/questions/644789/where-is-the-system-windows-forms-integration-namespace -->
-        <WindowsFormsHost Grid.Column="1">
+        <!-- 
+        <WindowsFormsHost Grid.Column="1" Grid.Row="1">
             <wf:WebBrowser x:Name="browser" DocumentCompleted="browser_DocumentCompleted"></wf:WebBrowser>
-        </WindowsFormsHost>
-        <ListView Name="movieList" Width="542" Height="769"
+        </WindowsFormsHost> -->
+        <cefSharp:ChromiumWebBrowser x:Name="cefbrowser" Address="http://www.google.co.jp" Grid.Column="1" Grid.Row="1" Loaded="cefbrowser_Loaded"  />
+        <ListView Name="movieList"
                   Grid.Column="0"
+                  Grid.Row="1"
                   SelectionChanged="movieList_SelectionChanged" 
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.CanContentScroll="False">

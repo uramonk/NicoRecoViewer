@@ -18,6 +18,7 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using static NicoRecoViewer.NicoVideoApiAccessor;
 using System.Runtime.InteropServices;
+using CefSharp;
 
 namespace NicoRecoViewer
 {
@@ -44,6 +45,7 @@ namespace NicoRecoViewer
         public MainWindow()
         {
             InitializeComponent();
+            Cef.Initialize(new CefSettings());
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -151,7 +153,8 @@ namespace NicoRecoViewer
                         //System.Diagnostics.Process.Start(mv.Url);
 
                         //InternetSetCookie(mv.Url, "JSESSIONID", Globals.ThisDocument.sessionID);
-                        browser.Navigate(mv.Url);
+                        //browser.Navigate(mv.Url);
+                        cefbrowser.Address = mv.Url;
                     }
                     else if(historyData.history != null && currentHistoryidx < historyData.history.Count())
                     {
@@ -163,7 +166,7 @@ namespace NicoRecoViewer
             }
            
         }
-
+        /*
         private void browser_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
         {
             // http://d.hatena.ne.jp/kiyo_hoge/20100819/1282240857
@@ -176,6 +179,18 @@ namespace NicoRecoViewer
                     player.InvokeMember("ext_setVideoSize", new object[] { "fit" });
                 }
             }
+        }*/
+
+        private void lisenceMenu_Click(object sender, RoutedEventArgs e)
+        {
+            LicenseWindow lw = new LicenseWindow();
+            lw.ShowDialog();
+        }
+
+        private void cefbrowser_Loaded(object sender, RoutedEventArgs e)
+        {
+            string script = String.Format("document.getElementById({0}).ext_setVideoSize({1})", "ext_setVideoSize", "fit");
+            cefbrowser.ExecuteScriptAsync(script);
         }
     }
 
