@@ -5,9 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NicoRecoViewer"
         mc:Ignorable="d"
-        Title="NicoRecoViewer" Height="800" Width="550" Loaded="Window_Loaded">
+        Title="NicoRecoViewer" Height="800" Width="1700" Loaded="Window_Loaded">
     <Grid>
-        <ListView Name="movieList" 
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="542"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <WebBrowser Name="browser" Grid.Column="1"></WebBrowser>
+        <ListView Name="movieList" Width="542" Height="769"
+                  Grid.Column="0"
                   SelectionChanged="movieList_SelectionChanged" 
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                   ScrollViewer.CanContentScroll="False">

@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using System.Runtime.Serialization;
 using System.Xml.Serialization;
 using static NicoRecoViewer.NicoVideoApiAccessor;
+using System.Runtime.InteropServices;
 
 namespace NicoRecoViewer
 {
@@ -25,6 +26,10 @@ namespace NicoRecoViewer
     /// </summary>
     public partial class MainWindow : Window
     {
+        // 参考サイト（Cookie）：http://dobon.net/vb/bbs/log3-51/30166.html#ID30166
+        [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
+        public static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
+
         // 履歴情報の数
         private int historyCount = 0;
         // 表示中の履歴情報のインデックス
@@ -116,7 +121,6 @@ namespace NicoRecoViewer
 
                 TimeSpan ts = new TimeSpan(0, 0, video.length);
                 data.Length ="再生時間：" + ts.ToString();
-
                 data.Url = video.url;
                 data.Type = "Movie";
                 list.Add(data);
@@ -144,10 +148,14 @@ namespace NicoRecoViewer
                 {
                     if(mv.Type != null)
                     {
-                        System.Diagnostics.Process.Start(mv.Url);
+                        //System.Diagnostics.Process.Start(mv.Url);
+                        
+                        //InternetSetCookie(mv.Url, "JSESSIONID", Globals.ThisDocument.sessionID);
+                        browser.Navigate(mv.Url);
                     }
                     else if(historyData.history != null && currentHistoryidx < historyData.history.Count())
                     {
+                        // 更に読み込むボタンの場合
                         HistoryData.History history = historyData.history[currentHistoryidx++];
                         LoadMovieList(movieViewList, cc, history);
                     }
