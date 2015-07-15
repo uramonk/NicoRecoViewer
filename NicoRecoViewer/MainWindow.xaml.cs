@@ -76,9 +76,19 @@ namespace NicoRecoViewer
 
             // ログインする。
             ResponseResult result = NicoVideoApiAccessor.Login(id, pass);
-            if(result.Result == Constants.Result.Failed)
+            if(result == null)
             {
                 MessageBox.Show(Constants.LoginFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
+                return Login();
+            }
+            else if(result.Result == Constants.Result.ProtocolError)
+            {
+                MessageBox.Show(Constants.LoginProtocolFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
+                return Login();
+            }
+            else if(result.Result == Constants.Result.Failed)
+            {
+                MessageBox.Show(Constants.LoginIdOrPassFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
                 return Login();
             }
 
@@ -100,6 +110,9 @@ namespace NicoRecoViewer
                 Video video = videos.video[i];
                 data.Thumbnail = video.thumbnail;
                 data.Title = video.title;
+                data.View = "再生：" + video.view.ToString();
+                data.Comment = "コメ：" + video.comment.ToString();
+                data.Mylist = "マイ：" + video.mylist.ToString();
                 data.Url = video.url;
                 data.Type = "Movie";
                 list.Add(data);
@@ -160,6 +173,24 @@ namespace NicoRecoViewer
         }
 
         public string Title
+        {
+            get;
+            set;
+        }
+
+        public string View
+        {
+            get;
+            set;
+        }
+
+        public string Comment
+        {
+            get;
+            set;
+        }
+
+        public string Mylist
         {
             get;
             set;

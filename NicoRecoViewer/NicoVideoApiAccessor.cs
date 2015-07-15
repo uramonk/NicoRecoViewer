@@ -61,7 +61,7 @@ namespace NicoRecoViewer
             {
                 if(ex.Status == WebExceptionStatus.ProtocolError)
                 {
-                    return null;
+                    return new ResponseResult(Constants.Result.ProtocolError, null);
                 }
 
                 return null;
@@ -213,3 +213,4 @@ namespace NicoRecoViewer
         }
     }
 }
+

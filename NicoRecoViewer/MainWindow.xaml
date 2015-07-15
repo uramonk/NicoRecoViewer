@@ -16,30 +16,62 @@
                     <Grid Height="150" Width="500">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="150"></ColumnDefinition>
-                            <ColumnDefinition Width="350"></ColumnDefinition>
+                            <ColumnDefinition Width="175"></ColumnDefinition>
+                            <ColumnDefinition Width="175"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="150"></RowDefinition>
+                            <RowDefinition Height="100"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
+                            <RowDefinition Height="25"></RowDefinition>
                         </Grid.RowDefinitions>
                         
                         <Image Grid.Column="0" 
-                               Grid.Row="0" 
+                               Grid.Row="0" Grid.RowSpan="3"
                                Source="{Binding Thumbnail}"
                                Width="130" 
                                Height="130"
                                Margin="10, 10, 10, 10"/>
-                        <Border BorderBrush="{x:Null}"
-                                Grid.Column="1" 
-                                Grid.Row="0"
-                                Width="330" 
-                                Height="130"
-                                Margin="10, 10, 10, 10">
-                            <TextBlock Text="{Binding Title}" 
-                                       TextWrapping="Wrap" 
-                                       FontSize="20"
-                                       VerticalAlignment="Stretch"
-                                       HorizontalAlignment="Stretch"/>
-                        </Border>
+                        
+                        <TextBlock Text="{Binding Title}" 
+                                    Grid.Column="1" Grid.ColumnSpan="2"
+                                    Grid.Row="0"
+                                    Width="330" 
+                                    Height="80"
+                                    Margin="10, 10, 10, 10"
+                                    TextWrapping="Wrap" 
+                                    FontSize="20"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="{Binding View}" 
+                                    Grid.Column="1" Grid.ColumnSpan="2"
+                                    Grid.Row="1"
+                                    Width="330" 
+                                    Height="25"
+                                    Margin="0"
+                                    TextWrapping="Wrap" 
+                                    FontSize="12"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="{Binding Comment}" 
+                                    Grid.Column="1"
+                                    Grid.Row="2"
+                                    Width="155" 
+                                    Height="25"
+                                    Margin="0"
+                                    TextWrapping="Wrap" 
+                                    FontSize="12"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"/>
+                        <TextBlock Text="{Binding Mylist}" 
+                                    Grid.Column="2"
+                                    Grid.Row="2"
+                                    Width="155" 
+                                    Height="25"
+                                    Margin="0"
+                                    TextWrapping="Wrap" 
+                                    FontSize="12"
+                                    VerticalAlignment="Stretch"
+                                    HorizontalAlignment="Stretch"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>

@@ -13,7 +13,9 @@ namespace NicoRecoViewer
         public static readonly string RelatedUrl = "http://www.nicovideo.jp/api/getrelation?page=1&sort=p&order=d&video=";
 
         public static readonly string LoginMessage = "メールアドレスとパスワードを入力してください。";
-        public static readonly string LoginFailedMessage = "メールアドレスもしくはパスワードが間違っています。";
+        public static readonly string LoginFailedMessage = "ログインできませんでした。";
+        public static readonly string LoginIdOrPassFailedMessage = "メールアドレスもしくはパスワードが間違っています。";
+        public static readonly string LoginProtocolFailedMessage = "サーバからの応答はありましたが、プロトコルエラーが発生しました。";
         public static readonly string GetHistoryFailedMessage = "視聴履歴を取得できませんでした。";
 
         public static readonly string CaptionError = "Error";
@@ -26,7 +28,8 @@ namespace NicoRecoViewer
         public enum Result
         {
             Failed,
-            Success
+            Success,
+            ProtocolError
         }
     }
 }
