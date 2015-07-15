@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NicoRecoViewer"
+        xmlns:wf="clr-namespace:System.Windows.Forms;assembly=System.Windows.Forms"
         mc:Ignorable="d"
         Title="NicoRecoViewer" Height="800" Width="1700" Loaded="Window_Loaded">
     <Grid>
@@ -11,7 +12,10 @@
             <ColumnDefinition Width="542"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <WebBrowser Name="browser" Grid.Column="1"></WebBrowser>
+        <!-- http://stackoverflow.com/questions/644789/where-is-the-system-windows-forms-integration-namespace -->
+        <WindowsFormsHost Grid.Column="1">
+            <wf:WebBrowser x:Name="browser" DocumentCompleted="browser_DocumentCompleted"></wf:WebBrowser>
+        </WindowsFormsHost>
         <ListView Name="movieList" Width="542" Height="769"
                   Grid.Column="0"
                   SelectionChanged="movieList_SelectionChanged" 

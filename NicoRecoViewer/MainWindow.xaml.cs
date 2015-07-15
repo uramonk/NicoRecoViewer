@@ -149,7 +149,7 @@ namespace NicoRecoViewer
                     if(mv.Type != null)
                     {
                         //System.Diagnostics.Process.Start(mv.Url);
-                        
+
                         //InternetSetCookie(mv.Url, "JSESSIONID", Globals.ThisDocument.sessionID);
                         browser.Navigate(mv.Url);
                     }
@@ -162,6 +162,20 @@ namespace NicoRecoViewer
                 }
             }
            
+        }
+
+        private void browser_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e)
+        {
+            // http://d.hatena.ne.jp/kiyo_hoge/20100819/1282240857
+            System.Windows.Forms.HtmlDocument document = browser.Document;
+            if(document != null)
+            {
+                System.Windows.Forms.HtmlElement player = document.GetElementById("external_nicoplayer");
+                if(player != null)
+                {
+                    player.InvokeMember("ext_setVideoSize", new object[] { "fit" });
+                }
+            }
         }
     }
 
