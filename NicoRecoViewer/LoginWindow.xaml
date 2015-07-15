@@ -29,7 +29,7 @@
         <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" FontSize="24">ログイン情報を入力してください。</TextBlock>
         <TextBox Name="userText" Grid.Row="3" Grid.Column="1" Grid.ColumnSpan="3" Foreground="Gray" FontSize="24" GotFocus="TextBox_GotFocus" HorizontalContentAlignment="Left" VerticalContentAlignment="Top">メールアドレス</TextBox>
         <PasswordBox Name="passText" Grid.Column="1" Grid.ColumnSpan="3" Grid.Row="5" Foreground="Gray" FontSize="24" GotFocus="PasswordBox_GotFocus" HorizontalContentAlignment="Left" VerticalContentAlignment="Top" Password="パスワード"></PasswordBox>
-        <Button Name="loginButton" Grid.Row="7" Grid.Column="1" FontSize="24" Click="loginButton_Click">ログイン</Button>
-        <Button Name="exitButton" Grid.Row="7" Grid.Column="3" FontSize="24" Click="exitButton_Click">終了</Button>
+        <Button Name="loginButton" Grid.Row="7" Grid.Column="1" FontSize="24" Click="loginButton_Click" IsDefault="True">ログイン</Button>
+        <Button Name="exitButton" Grid.Row="7" Grid.Column="3" FontSize="24" Click="exitButton_Click" IsCancel="True">終了</Button>
     </Grid>
 </Window>
