@@ -48,6 +48,7 @@ namespace NicoRecoViewer
 
             CefSettings cefSettings = new CefSettings();
             cefSettings.Locale = "ja-JP";
+
             Cef.Initialize(cefSettings);
 
             cefbrowser.PreviewTextInput += (sender, e) =>
