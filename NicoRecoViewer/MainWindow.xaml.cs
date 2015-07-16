@@ -45,7 +45,20 @@ namespace NicoRecoViewer
         public MainWindow()
         {
             InitializeComponent();
-            Cef.Initialize(new CefSettings());
+
+            CefSettings cefSettings = new CefSettings();
+            cefSettings.Locale = "ja-JP";
+            Cef.Initialize(cefSettings);
+
+            cefbrowser.PreviewTextInput += (sender, e) =>
+            {
+                foreach (var character in e.Text)
+                {
+                    cefbrowser.SendKeyEvent((int)0x0102, character, 0);
+                }
+
+                e.Handled = true;
+            };
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
