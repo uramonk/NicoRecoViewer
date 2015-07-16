@@ -46,10 +46,14 @@ namespace NicoRecoViewer
         {
             InitializeComponent();
 
-            CefSettings cefSettings = new CefSettings();
-            cefSettings.Locale = "ja-JP";
-
-            Cef.Initialize(cefSettings);
+            CefSettings settings = new CefSettings();
+            settings.Locale = "ja-JP";
+            settings.LogSeverity = LogSeverity.Verbose;
+            //settings.CefCommandLineArgs.Add("debug-plugin-loading", "1");
+            //settings.CefCommandLineArgs.Add("allow-outdated-plugins", "1");
+            //settings.CefCommandLineArgs.Add("always-authorize-plugins", "1");
+            settings.CefCommandLineArgs.Add("enable-npapi", "1");
+            Cef.Initialize(settings);
 
             cefbrowser.PreviewTextInput += (sender, e) =>
             {
