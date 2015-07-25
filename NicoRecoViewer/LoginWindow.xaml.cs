@@ -26,6 +26,7 @@ namespace NicoRecoViewer
 
         public string Id { get; private set; }
         public string Password { get; private set; }
+        public bool IsExited { get; private set; }
 
         private void TextBox_GotFocus(object sender, RoutedEventArgs e)
         {
@@ -65,7 +66,8 @@ namespace NicoRecoViewer
 
         private void exitButton_Click(object sender, RoutedEventArgs e)
         {
-            Environment.Exit(0);
+            IsExited = true;
+            this.Close();
         }
     }
 }

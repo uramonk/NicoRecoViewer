@@ -30,7 +30,7 @@
         <WindowsFormsHost Grid.Column="1" Grid.Row="1">
             <wf:WebBrowser x:Name="browser" DocumentCompleted="browser_DocumentCompleted"></wf:WebBrowser>
         </WindowsFormsHost> -->
-        <cefSharp:ChromiumWebBrowser x:Name="cefbrowser" Address="http://www.google.co.jp" Grid.Column="1" Grid.Row="1" />
+        <cefSharp:ChromiumWebBrowser x:Name="cefbrowser" Grid.Column="1" Grid.Row="1" />
         <ListView Name="movieList"
                   Grid.Column="0"
                   Grid.Row="1"

@@ -19,6 +19,8 @@ using System.Xml.Serialization;
 using static NicoRecoViewer.NicoVideoApiAccessor;
 using System.Runtime.InteropServices;
 using CefSharp;
+using System.Windows.Markup;
+using System.Globalization;
 
 namespace NicoRecoViewer
 {
@@ -47,13 +49,14 @@ namespace NicoRecoViewer
             InitializeComponent();
 
             CefSettings settings = new CefSettings();
-            settings.Locale = "ja-JP";
+            //settings.PackLoadingDisabled = false;
+            //settings.Locale = "ja-JP";
+            //settings.LocalesDirPath = System.AppDomain.CurrentDomain.BaseDirectory + "locales";
             settings.LogSeverity = LogSeverity.Verbose;
-            //settings.CefCommandLineArgs.Add("debug-plugin-loading", "1");
-            //settings.CefCommandLineArgs.Add("allow-outdated-plugins", "1");
-            //settings.CefCommandLineArgs.Add("always-authorize-plugins", "1");
             settings.CefCommandLineArgs.Add("enable-npapi", "1");
             Cef.Initialize(settings);
+            //cefbrowser.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.Name);
+            //cefbrowser.RequestHandler = this;
 
             cefbrowser.PreviewTextInput += (sender, e) =>
             {
@@ -76,12 +79,18 @@ namespace NicoRecoViewer
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ResponseResult result = Login();
+            if(result == null)
+            {
+                return;
+            }
 
             CookieCollection cl = result.CookieContainer.GetCookies(new Uri("http://www.nicovideo.jp/"));
             if (cl != null && cl.Count > 1)
             {
                 Cookie cookie = cl[1];
                 Cef.SetCookie("http://www.nicovideo.jp/", cookie.Name, cookie.Value, cookie.Domain, cookie.Path, cookie.Secure, cookie.HttpOnly, cookie.Expired, cookie.Expires);
+
+                cefbrowser.Address = Constants.NicoNicoUrl;
 
                 // 履歴情報を取得する。
                 historyData = NicoVideoApiAccessor.GetHistory(result.CookieContainer);
@@ -111,7 +120,14 @@ namespace NicoRecoViewer
             loginWin.ShowDialog();
             string id = loginWin.Id;
             string pass = loginWin.Password;
+            bool isExited = loginWin.IsExited;
             loginWin = null;
+
+            if(isExited)
+            {
+                Application.Current.Shutdown();
+                return null;
+            }
 
             // ログインする。
             ResponseResult result = NicoVideoApiAccessor.Login(id, pass);

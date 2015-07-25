@@ -68,6 +68,7 @@ namespace NicoRecoViewer
             }
             catch(Exception e)
             {
+                Console.WriteLine(e.ToString());
                 return null;
             }
             finally
@@ -195,6 +196,7 @@ namespace NicoRecoViewer
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
             }
             finally
             {

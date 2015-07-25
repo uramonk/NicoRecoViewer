@@ -8,6 +8,7 @@ namespace NicoRecoViewer
 {
     public static class Constants
     {
+        public static readonly string NicoNicoUrl = "http://www.nicovideo.jp/video_top";
         public static readonly string LoginUrl = "https://secure.nicovideo.jp/secure/login?site=niconico";
         public static readonly string HistoryUrl = "http://www.nicovideo.jp/api/videoviewhistory/list";
         public static readonly string RelatedUrl = "http://www.nicovideo.jp/api/getrelation?page=1&sort=p&order=d&video=";
