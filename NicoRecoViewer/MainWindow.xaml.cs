@@ -64,30 +64,44 @@ namespace NicoRecoViewer
 
                 e.Handled = true;
             };
+
+            cefbrowser.FrameLoadEnd += Cefbrowser_FrameLoadEnd;
+        }
+
+        private void Cefbrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            //cefbrowser.EvaluateScriptAsync("document.getElementById (\"external_nicoplayer\").ext_setVideoSize(\"fit\")");
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             ResponseResult result = Login();
 
-            // 履歴情報を取得する。
-            historyData = NicoVideoApiAccessor.GetHistory(result.CookieContainer);
-            if(Constants.HistoryStatus.Fail.Equals(historyData.status))
+            CookieCollection cl = result.CookieContainer.GetCookies(new Uri("http://www.nicovideo.jp/"));
+            if (cl != null && cl.Count > 1)
             {
-                MessageBox.Show(Constants.GetHistoryFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                Cookie cookie = cl[1];
+                Cef.SetCookie("http://www.nicovideo.jp/", cookie.Name, cookie.Value, cookie.Domain, cookie.Path, cookie.Secure, cookie.HttpOnly, cookie.Expired, cookie.Expires);
+
+                // 履歴情報を取得する。
+                historyData = NicoVideoApiAccessor.GetHistory(result.CookieContainer);
+                if (Constants.HistoryStatus.Fail.Equals(historyData.status))
+                {
+                    MessageBox.Show(Constants.GetHistoryFailedMessage, Constants.CaptionError, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+                movieViewList = new List<MovieData>();
+
+                historyCount = historyData.history.Count();
+                currentHistoryidx = 0;
+
+                HistoryData.History history = historyData.history[currentHistoryidx++];
+
+                LoadMovieList(movieViewList, cc, history);
+
+                // 動画一覧を表示する。
+                movieList.ItemsSource = movieViewList;
             }
-            movieViewList = new List<MovieData>();
-
-            historyCount = historyData.history.Count();
-            currentHistoryidx = 0;
-
-            HistoryData.History history = historyData.history[currentHistoryidx++];
-
-            LoadMovieList(movieViewList, cc, history);
-
-            // 動画一覧を表示する。
-            movieList.ItemsSource = movieViewList;
         }
 
         private ResponseResult Login()
@@ -203,12 +217,6 @@ namespace NicoRecoViewer
         {
             LicenseWindow lw = new LicenseWindow();
             lw.ShowDialog();
-        }
-
-        private void cefbrowser_Loaded(object sender, RoutedEventArgs e)
-        {
-            string script = String.Format("document.getElementById({0}).ext_setVideoSize({1})", "ext_setVideoSize", "fit");
-            cefbrowser.ExecuteScriptAsync(script);
         }
     }
 
